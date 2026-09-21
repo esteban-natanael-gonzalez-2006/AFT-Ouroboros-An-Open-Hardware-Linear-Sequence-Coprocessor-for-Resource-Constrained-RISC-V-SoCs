@@ -15,15 +15,16 @@ AFT-Ouroboros is an open-source digital coprocessor designed for sub-watt linear
 
 ## Repository Taxonomy
 
+```text
 .
-├── 00_docs/                  # Architecture specifications, datasheets, and technical white paper
+├── 00_docs/                  # Spec, datasheets & white papers
 ├── 01_src/
-│   ├── proprietary/          # Core SystemVerilog RTL (Accumulator, GEMV, BRAM, Top-level)
-│   └── public/               # Verification testbenches, stimuli, and golden reference vectors
-├── 02_benchmarks/            # Physical EDA synthesis scripts, reports, and context scaling
+│   ├── proprietary/          # RTL core (Acc, GEMV, BRAM, Top)
+│   └── public/               # Testbenches, stimuli & golden vectors
+├── 02_benchmarks/            # EDA synthesis scripts & logs
 ├── 03_data/                  # Curated calibration datasets
-└── 05_artifacts_checkpoints/ # Cryptographic metadata, checksums, and weights
-
+└── 05_artifacts_checkpoints/ # Hashes, metadata & checkpoints
+```
 
 ## Documentation References
 - [AFT-OURO-D128-TOP Datasheet](00_docs/AFT_OURO_D128_IP_Datasheet.md)
