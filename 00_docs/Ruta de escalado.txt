@@ -1,0 +1,1243 @@
+Sí. Con V9.5 ya podemos cambiar de pregunta: no se trata tanto de seguir demostrando los fundamentos internos de Ouroboros, sino de averiguar qué ocurre cuando lo conviertes en un modelo entrenable de mayor escala y qué hardware explota mejor sus propiedades.
+
+Y antes de eso, hay tres correcciones importantes a los dictámenes de V9.5.
+
+1. TEST 11: muy fuerte, pero “exactamente” debe matizarse
+
+El resultado:
+
+\[
+\epsilon_{\rm rel}=0.00030\%-0.0152\%
+\]
+
+es excelente para FP32 y confirma que ambas implementaciones producen el mismo observable dentro del error numérico observado.
+
+No escribiría “exactamente” en sentido matemático absoluto. Es mejor:
+
+> Las formulaciones Pairwise y Descartes son numéricamente equivalentes dentro de la precisión FP32 observada, con error relativo máximo de 0.0152% en el barrido realizado.
+
+
+
+Eso ya es suficientemente fuerte.
+
+
+---
+
+2. TEST 12: aquí apareció algo muy interesante
+
+Pairwise:
+
+\[
+\alpha=2.1838,\quad IC_{95\%}=[1.9910,2.3766]
+\]
+
+Esto respalda \(O(N^2)\), porque el intervalo contiene 2.
+
+Pero Descartes tiene:
+
+\[
+\alpha=0.4316
+\]
+
+y el ajuste afín:
+
+\[
+T(N)=1.3410+0.01539N\;\mu s
+\]
+
+con:
+
+\[
+R^2=0.999633.
+\]
+
+Esto no significa que Descartes sea sublineal.
+
+Significa que, en este rango, el coste está dominado por un término constante:
+
+\[
+\boxed{T_D(N)=T_0+cN}
+\]
+
+donde:
+
+\[
+T_0\approx1.341\,\mu s
+\]
+
+y
+
+\[
+c\approx15.39\,ns/\text{entidad}.
+\]
+
+Eso encaja muchísimo mejor con la estructura que describiste:
+
+\[
+O(D^2)+O(ND).
+\]
+
+Con \(D=128\) fijo:
+
+\[
+O(1)+O(N).
+\]
+
+Este es un resultado muy bueno para pensar en escalabilidad.
+
+
+---
+
+3. TEST 15: demuestra dependencia de estado, pero no todavía “memoria de trayectoria” como mecanismo único
+
+Warm In-Domain:
+
+\[
+L_{4096}=11.89
+\]
+
+vs Cold:
+
+\[
+L_{4096}=19.23.
+\]
+
+Eso es una diferencia grande:
+
+\[
+\Delta L\approx7.34\;nats.
+\]
+
+Por tanto, hay evidencia de que el estado inicial/contexto previo modifica sustancialmente la predicción.
+
+Pero como Warm-Renamed también mejora respecto de Cold, aunque mucho menos, todavía debemos separar:
+
+\[
+\text{contexto útil}
+\]
+
+de:
+
+\[
+\text{simple cambio de distribución del estado}.
+\]
+
+No obstante, el resultado ya permite pasar a una fase mucho más interesante.
+
+
+---
+
+Ahora sí: ¿qué significa escalar Ouroboros?
+
+Yo dividiría el problema en cinco ejes simultáneos:
+
+\[
+\boxed{
+\text{Velocidad}
++
+\text{Eficiencia}
++
+\text{Calidad}
++
+\text{Memoria}
++
+\text{Escalabilidad de hardware}
+}
+\]
+
+Y añadiría un sexto:
+
+\[
+\boxed{\text{Área computacional habilitada}}
+\]
+
+porque tu arquitectura puede tener valor no sólo como “otro modelo de lenguaje pequeño”, sino como una arquitectura especializada para determinados regímenes de inferencia.
+
+
+---
+
+1. Primero hay que construir una familia de modelos
+
+No tiene mucho sentido comparar hardware con el modelo actual de 128D y 262k parámetros solamente.
+
+Necesitamos una escala controlada.
+
+Yo construiría aproximadamente:
+
+Modelo	D	Parámetros aproximados	Objetivo
+
+O-128	128	0.26 M	referencia actual
+O-256	256	~1 M	móvil/L2
+O-512	512	~4 M	móvil potente / desktop
+O-1K	1024	~16 M	desktop/CPU
+O-2K	2048	~64 M	workstation
+O-4K	4096	~250 M	GPU/accelerador
+O-8K	8192	~1 B	GPU/servidor
+
+
+Pero estos tamaños son sólo puntos de partida.
+
+La relación real de parámetros con D depende de cómo escale exactamente tu arquitectura.
+
+Lo importante es que cada modelo conserve:
+
+mismo algoritmo;
+
+mismo optimizador;
+
+mismo protocolo;
+
+misma tokenización;
+
+misma tarea;
+
+mismas métricas.
+
+
+Así podemos construir una curva:
+
+\[
+\boxed{L(P)}
+\]
+
+y otra:
+
+\[
+\boxed{T(P)}
+\]
+
+y otra:
+
+\[
+\boxed{E(P)}
+\]
+
+donde \(P\) es número de parámetros.
+
+
+---
+
+2. La primera pregunta que queremos responder
+
+No es:
+
+> “¿Cuántos parámetros soporta Ouroboros?”
+
+
+
+Es:
+
+> ¿Cuánta calidad adicional obtiene por cada incremento de cómputo y memoria?
+
+
+
+Por ejemplo:
+
+\[
+\eta_L=
+\frac{\Delta L}{\Delta T}
+\]
+
+\[
+\eta_E=
+\frac{\Delta L}{\Delta J}
+\]
+
+\[
+\eta_M=
+\frac{\Delta L}{\Delta MB}.
+\]
+
+Entonces podríamos descubrir algo mucho más importante:
+
+Escenario A
+
+Duplicar D:
+
+\[
+128\rightarrow256
+\]
+
+mejora mucho la calidad.
+
+Escenario B
+
+\[
+256\rightarrow512
+\]
+
+apenas mejora.
+
+Entonces habríamos encontrado un punto de saturación arquitectónica.
+
+Eso sería fundamental para decidir hardware.
+
+
+---
+
+3. Necesitamos separar entrenamiento de inferencia
+
+Aquí está probablemente la decisión de hardware más importante.
+
+Tu arquitectura podría tener perfiles radicalmente diferentes:
+
+Perfil A — entrenamiento
+
+Necesitamos:
+
+mucho throughput;
+
+FP32/BF16/FP16;
+
+memoria;
+
+bandwidth;
+
+paralelismo;
+
+backward eficiente.
+
+
+Perfil B — inferencia
+
+Necesitamos:
+
+baja latencia;
+
+caché;
+
+poca memoria;
+
+pocos bytes movidos;
+
+SIMD;
+
+bajo consumo.
+
+
+Una arquitectura que sea extraordinariamente eficiente en inferencia CPU puede no ser competitiva entrenando en CPU.
+
+Y al revés.
+
+Por eso haría dos rankings sin mezclar métricas:
+
+\[
+\text{Training efficiency}
+\]
+
+y
+
+\[
+\text{Inference efficiency}.
+\]
+
+
+---
+
+4. La métrica que más me interesa para Ouroboros
+
+No sería simplemente tokens/s.
+
+Utilizaría:
+
+\[
+\boxed{\mu J/\text{token}}
+\]
+
+para inferencia.
+
+Y:
+
+\[
+\boxed{\text{tokens/s/W}}
+\]
+
+para throughput.
+
+Y para entrenamiento:
+
+\[
+\boxed{
+\frac{\Delta L}{J}
+}
+\]
+
+o una métrica equivalente definida cuidadosamente.
+
+Porque podrías descubrir algo como:
+
+Hardware	tok/s	W	tok/s/W
+
+CPU móvil	15k	1	15k
+CPU desktop	100k	25	4k
+GPU	1M	250	4k
+NPU	300k	2	150k
+
+
+En ese escenario, la NPU no sería necesariamente la más rápida en términos absolutos, pero sí tendría una ventaja enorme de eficiencia.
+
+Eso cambia completamente la estrategia de especialización.
+
+
+---
+
+5. Qué dispositivos deberíamos probar
+
+No intentaría comprar/probar veinte plataformas inmediatamente.
+
+Construiría una escalera de hardware.
+
+Nivel 1 — ARM móvil
+
+Ya tienes:
+
+Snapdragon 870
+
+Cortex-A77/Kryo + Hexagon.
+
+Y:
+
+Helio G37
+
+Cortex-A53.
+
+Estos dos ya son extremadamente útiles porque representan dos clases de CPU ARM móvil.
+
+
+---
+
+6. Nivel 2 — ARM moderno de escritorio/servidor
+
+Después:
+
+Apple Silicon
+
+M1/M2/M3/M4/M5 según disponibilidad.
+
+Interesa especialmente por:
+
+ARM64;
+
+memoria unificada;
+
+gran ancho de banda;
+
+SIMD;
+
+aceleradores;
+
+excelente eficiencia energética.
+
+
+Ampere/Graviton
+
+Interesan para servidor ARM:
+
+muchos cores;
+
+ARM64;
+
+buena escalabilidad;
+
+infraestructura cloud.
+
+
+Aquí la pregunta sería:
+
+> ¿Ouroboros conserva ventaja cuando pasamos de “un core móvil” a muchos cores ARM?
+
+
+
+
+---
+
+7. Nivel 3 — x86
+
+Necesitamos al menos:
+
+AMD Ryzen/EPYC
+
+y
+
+Intel Core/Xeon.
+
+No porque necesariamente sean mejores, sino para determinar:
+
+\[
+\text{dependencia de ISA}.
+\]
+
+Si Ouroboros funciona muy bien en:
+
+ARM NEON;
+
+AVX2;
+
+AVX-512;
+
+
+entonces tienes una arquitectura mucho más portable.
+
+Si funciona especialmente bien en ARM, eso también es un descubrimiento:
+
+> Ouroboros podría estar especialmente alineado con arquitectura ARM/cache-local.
+
+
+
+
+---
+
+8. Nivel 4 — GPU
+
+Aquí cambiaría completamente el benchmark.
+
+NVIDIA
+
+CUDA:
+
+FP32;
+
+FP16;
+
+BF16;
+
+Tensor Cores.
+
+
+AMD
+
+ROCm:
+
+Matrix Cores;
+
+wavefronts;
+
+memoria HBM/GDDR.
+
+
+Apple
+
+Metal.
+
+La pregunta no sería solamente:
+
+> “¿Cuántos tokens/s hace?”
+
+
+
+Sino:
+
+\[
+\frac{\text{trabajo útil}}{\text{bytes movidos}}
+\]
+
+y:
+
+\[
+\frac{\text{trabajo útil}}{\text{energía}}.
+\]
+
+
+---
+
+9. Pero hay un hardware especialmente interesante para tu arquitectura
+
+NPU / aceleradores de IA
+
+Porque tu arquitectura tiene varias características potencialmente atractivas para hardware dedicado:
+
+operaciones estructuradas;
+
+estados relativamente pequeños;
+
+rutas determinadas;
+
+posible localidad extrema;
+
+MoE;
+
+paralelismo por slots;
+
+reducción global;
+
+posibilidad de evitar grandes movimientos de memoria.
+
+
+Esto puede ser más importante que comparar únicamente contra GPUs.
+
+
+---
+
+10. La pregunta de hardware que realmente debemos contestar
+
+No:
+
+> “¿Cuál es el hardware más potente?”
+
+
+
+Sino:
+
+\[
+\boxed{
+\text{¿Dónde coincide mejor el patrón computacional de Ouroboros con la microarquitectura?}
+}
+\]
+
+Para responderla construiremos una firma:
+
+\[
+\mathcal{F}_O=
+(
+\text{FLOP/token},
+\text{bytes/token},
+AI,
+\text{working set},
+\text{SIMD},
+\text{parallelism},
+\text{branching},
+\text{reuse}
+)
+\]
+
+y luego comparamos esa firma con cada hardware.
+
+
+---
+
+11. Tu working set actual es particularmente interesante
+
+Actualmente:
+
+\[
+W\approx1\,MiB
+\]
+
+de pesos.
+
+Eso es casi exactamente:
+
+\[
+2^{20}\;bytes.
+\]
+
+Y activaciones:
+
+\[
+4.75\,KiB.
+\]
+
+Eso genera una pregunta de arquitectura muy importante:
+
+¿Qué ocurre cuando D crece?
+
+Por ejemplo, si aproximadamente:
+
+\[
+P(D)\propto D^2
+\]
+
+entonces:
+
+D	crecimiento aproximado
+
+128	1×
+256	4×
+512	16×
+1024	64×
+2048	256×
+
+
+Entonces el modelo pasa progresivamente de:
+
+\[
+L1/L2
+\]
+
+a:
+
+\[
+L2/L3
+\]
+
+a:
+
+\[
+DRAM/HBM.
+\]
+
+Ese cruce es probablemente uno de los experimentos más importantes de toda la investigación.
+
+
+---
+
+12. Podemos buscar el “sweet spot” de caché
+
+Para cada D:
+
+\[
+W(D)
+\]
+
+y:
+
+\[
+T(D).
+\]
+
+Entonces graficamos:
+
+\[
+T(D)
+\]
+
+junto con:
+
+\[
+W(D)/C_\text{cache}.
+\]
+
+Podría aparecer algo así:
+
+latencia
+  │                    ╱
+  │                  ╱
+  │               ╱
+  │            ╱
+  │        ___╱
+  │____───
+  └────────────────── D
+       L1   L2   L3   DRAM
+
+Si aparece un cambio de pendiente cuando:
+
+\[
+W(D)>C_{L2},
+\]
+
+tendríamos evidencia experimental directa de que la localidad de memoria es una de las variables dominantes de Ouroboros.
+
+
+---
+
+13. Esto nos lleva al benchmark realmente importante
+
+Yo construiría:
+
+AFT-Ouroboros Scaling Benchmark
+
+Con:
+
+\[
+D=
+128,256,512,1024,2048,4096
+\]
+
+y para cada uno:
+
+Arquitectura
+
+parámetros;
+
+bytes de pesos;
+
+activaciones;
+
+working set.
+
+
+Computación
+
+operaciones/token;
+
+FLOP/token;
+
+ciclos/token;
+
+SIMD;
+
+IPC si disponible.
+
+
+Memoria
+
+bytes leídos;
+
+bytes escritos;
+
+cache misses;
+
+L1/L2/L3;
+
+DRAM si medible.
+
+
+Rendimiento
+
+tok/s;
+
+μs/token;
+
+P50;
+
+P95;
+
+P99.
+
+
+Energía
+
+J/token;
+
+W;
+
+tok/s/W.
+
+
+Calidad
+
+train loss;
+
+validation loss;
+
+OOD loss;
+
+PPL;
+
+accuracy/top-1.
+
+
+Y finalmente:
+
+\[
+\boxed{
+\text{Quality}/\text{time},
+\quad
+\text{Quality}/\text{J},
+\quad
+\text{Quality}/\text{MB}
+}
+\]
+
+
+---
+
+14. Y aquí aparece la pregunta más importante sobre “qué área nueva habilita”
+
+Hay varias posibilidades.
+
+A. Tiny/edge language models
+
+Modelos pequeños que permanecen enteramente en caché.
+
+Tu resultado actual apunta naturalmente hacia esta dirección.
+
+B. Código y sistemas
+
+Tu corpus tiene C/Lean/POSIX y Ouroboros aprende muy bien determinadas regularidades.
+
+Pero habría que demostrar transferencia antes de hacer una afirmación fuerte.
+
+C. Streaming inference
+
+La recurrencia podría ser interesante para:
+
+procesamiento continuo;
+
+logs;
+
+telemetría;
+
+sensores;
+
+protocolos;
+
+texto streaming.
+
+
+Porque no necesitas necesariamente reconstruir todo el contexto.
+
+D. Hardware especializado
+
+La combinación:
+
+\[
+\text{estado pequeño}
++
+\text{localidad}
++
+\text{slots}
++
+\text{reducciones}
+\]
+
+podría ser adecuada para un acelerador especializado.
+
+E. Sistemas embebidos sin NPU
+
+Aquí tienes una ventaja experimental real:
+
+> ya estás demostrando el algoritmo en un Cortex-A53 y un Cortex-A77 sin depender de una GPU/NPU.
+
+
+
+Eso hace que ARM CPU sea un objetivo natural de investigación.
+
+
+---
+
+15. Hay una prueba que añadiría antes de escalar a millones de parámetros
+
+Long-context scaling
+
+Ahora mismo sabemos mucho sobre:
+
+\[
+D
+\]
+
+pero necesitamos medir:
+
+\[
+L_\text{context}.
+\]
+
+Por ejemplo:
+
+\[
+64,\;256,\;1K,\;4K,\;16K,\;64K,\;256K
+\]
+
+tokens.
+
+Y medir:
+
+\[
+T(L).
+\]
+
+Esto puede ser decisivo.
+
+Si la recurrencia realmente permite mantener un estado compacto, podríamos observar algo cercano a:
+
+\[
+T(L)\propto L
+\]
+
+pero con memoria de contexto:
+
+\[
+M(L)\approx O(1).
+\]
+
+Eso sería mucho más relevante para aplicaciones reales que simplemente aumentar D.
+
+
+---
+
+16. Y haría otra matriz: calidad × escala
+
+Algo como:
+
+Modelo	Params	Contexto	Train loss	Val loss	OOD	tok/s	J/token	RAM
+
+O-128	0.26M	1K	…	…	…	…	…	…
+O-256	~1M	1K	…	…	…	…	…	…
+O-512	~4M	1K	…	…	…	…	…	…
+O-1K	~16M	1K	…	…	…	…	…	…
+O-2K	~64M	1K	…	…	…	…	…	…
+
+
+Luego repetir para 4K/16K contexto.
+
+Ahí aparecerá la verdadera curva de escalabilidad.
+
+
+---
+
+17. Algo todavía más importante: no escales solamente el tamaño
+
+Tenemos que hacer tres escalados independientes.
+
+Escalado A — dimensión
+
+\[
+D\uparrow
+\]
+
+Pregunta:
+
+> ¿cuánta capacidad adicional produce?
+
+
+
+Escalado B — datos
+
+\[
+N_\text{tokens}\uparrow
+\]
+
+Pregunta:
+
+> ¿cuánto mejora con más datos?
+
+
+
+Escalado C — contexto
+
+\[
+L_\text{context}\uparrow
+\]
+
+Pregunta:
+
+> ¿cuánto contexto puede utilizar?
+
+
+
+Y después:
+
+\[
+\boxed{
+D\times N_\text{datos}\times L_\text{context}
+}
+\]
+
+será el espacio de diseño real.
+
+
+---
+
+18. Hay una cuarta dimensión que puede ser decisiva: precisión numérica
+
+Actualmente FP32.
+
+Pero deberíamos probar:
+
+\[
+FP32
+\]
+
+\[
+BF16
+\]
+
+\[
+FP16
+\]
+
+y, si la arquitectura lo tolera:
+
+\[
+INT8
+\]
+
+o representaciones aún más compactas.
+
+Porque tu ventaja podría aumentar enormemente si:
+
+\[
+W_{FP32}=1\,MiB
+\]
+
+pasa a:
+
+\[
+W_{INT8}=256\,KiB.
+\]
+
+De repente, un modelo que apenas cabe en L2 puede entrar holgadamente en L2/L1 de determinadas plataformas.
+
+Eso puede producir un salto mucho mayor que una optimización algorítmica marginal.
+
+
+---
+
+19. La matriz de hardware que yo construiría
+
+No pondría todavía nombres concretos con rankings. Construiría esto:
+
+Plataforma	ISA	SIMD/Matrix	Caché	Memoria	Modelo máximo L2	tok/s	J/token	Training
+
+Cortex-A53	ARM64	NEON	L1/L2	LPDDR	?	medido	?	medido
+Kryo 585	ARM64	NEON	L1/L2	LPDDR	?	16k actual	?	medido
+Apple Silicon	ARM64	AMX/NEON*	unified	LPDDR	?	?	?	?
+Ryzen	x86-64	AVX2/AVX-512*	L1/L2/L3	DDR5	?	?	?	?
+Xeon	x86-64	AVX-512	L1/L2/L3	DDR5/HBM*	?	?	?	?
+NVIDIA GPU	CUDA	Tensor Core	SRAM/L2/HBM	HBM/GDDR	—	?	?	?
+AMD GPU	ROCm	Matrix Core	LDS/L2/HBM	HBM/GDDR	—	?	?	?
+NPU	específico	matrix/vector	SRAM	LPDDR	—	?	?	?
+
+
+* según modelo.
+
+La idea no es descubrir “el ganador” de antemano.
+
+La idea es descubrir:
+
+\[
+\boxed{
+\text{hardware compatibility profile de AFT-Ouroboros}
+}
+\]
+
+
+---
+
+20. Mi prioridad absoluta para la siguiente fase
+
+No saltaría todavía a un modelo de 1B parámetros.
+
+Haría primero un Scaling Pilot:
+
+Fase A
+
+\[
+D=128,256,512,1024
+\]
+
+Fase B
+
+Para cada D:
+
+\[
+N_\text{datos}=100KB,\;1MB,\;10MB,\;100MB
+\]
+
+Fase C
+
+Contextos:
+
+\[
+256,\;1K,\;4K,\;16K
+\]
+
+Fase D
+
+Precisiones:
+
+\[
+FP32,\;BF16/FP16,\;INT8
+\]
+
+Fase E
+
+Hardware:
+
+1. Snapdragon 870;
+
+
+2. Helio G37;
+
+
+3. una CPU ARM moderna;
+
+
+4. una CPU x86;
+
+
+5. una GPU/NPU.
+
+
+
+Con eso ya podríamos construir un verdadero mapa de escalabilidad.
+
+
+---
+
+21. Qué descubrimiento buscaría
+
+Hay cuatro resultados posibles, y cada uno nos diría algo diferente:
+
+Caso 1
+
+La calidad sigue creciendo con D y los costes también.
+
+→ Ouroboros es principalmente una arquitectura escalable convencional con una buena implementación.
+
+Caso 2
+
+La calidad se satura rápidamente, pero la eficiencia permanece extraordinaria.
+
+→ Tiny/edge architecture.
+
+Caso 3
+
+La calidad continúa creciendo mientras el working set permanece relativamente pequeño gracias a la estructura.
+
+→ Arquitectura especialmente interesante para aceleradores/cache-local.
+
+Caso 4
+
+La calidad mejora mucho cuando aumenta contexto, pero no tanto cuando aumenta D.
+
+→ La principal capacidad de Ouroboros podría estar en la dinámica recurrente, no simplemente en el número de parámetros.
+
+Ese último caso sería particularmente interesante dada la evidencia actual de dependencia del estado.
+
+
+---
+
+Mi lectura global de V9.5
+
+Ahora tenemos algo que antes no teníamos:
+
+\[
+\boxed{
+\text{algoritmo}
+\rightarrow
+\text{equivalencia matemática}
+\rightarrow
+\text{escalamiento}
+\rightarrow
+\text{microarquitectura}
+\rightarrow
+\text{comportamiento de aprendizaje}
+}
+\]
+
+Y los resultados empiezan a formar una imagen coherente:
+
+Descartes elimina la dependencia cuadrática de comparar explícitamente todos los pares.
+
+Sistema 1 tiene paralelismo estructural, pero la CPU monohilo paga aproximadamente \(69.5,ns\) por slot.
+
+El working set es deliberadamente pequeño y está diseñado alrededor de caché.
+
+El entrenamiento puede alcanzar ~16k tok/s cuando el proceso obtiene prácticamente todo el tiempo de CPU, pero el throughput de pared cae cuando la ocupación CPU cae.
+
+La representación aprendida muestra una dependencia fuerte del estado y del corpus, con una enorme brecha entre in-domain y OOD.
+
+Eso significa que la siguiente pregunta ya no es puramente matemática:
+
+\[
+\boxed{
+\textbf{¿Cuál es la curva de escala de AFT-Ouroboros?}
+}
+\]
+
+Y esa curva debe tener tres ejes simultáneos:
+
+\[
+\boxed{
+\text{calidad}
+\times
+\text{velocidad}
+\times
+\text{energía}
+}
+\]
+
+condicionados por:
+
+\[
+\boxed{
+\text{memoria}
+\times
+\text{contexto}
+\times
+\text{hardware}.
+}
+\]
+
+Si obtenemos esas curvas, podremos decir con mucha más precisión qué clase de modelo es realmente Ouroboros, hasta dónde escala, dónde deja de ser eficiente y qué familia de hardware está estructuralmente mejor alineada con él.

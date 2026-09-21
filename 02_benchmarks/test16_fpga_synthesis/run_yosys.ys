@@ -1,0 +1,8 @@
+read_verilog -sv descartes_acc_unit.sv
+read_verilog -sv descartes_gemv_engine.sv
+read_verilog -sv descartes_bram_16kb.sv
+read_verilog -sv descartes_operator_top.sv
+hierarchy -top descartes_operator_top
+proc; opt; fsm; opt; memory; opt
+synth_xilinx -family xc7 -top descartes_operator_top
+stat

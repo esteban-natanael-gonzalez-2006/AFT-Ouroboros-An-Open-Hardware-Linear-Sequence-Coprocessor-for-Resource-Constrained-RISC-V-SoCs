@@ -1,0 +1,3898 @@
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable, a, 4096, (uint64_t)mem, prot) != 0) {
+            kfree(mem); return -1;
+        }
+        if (a >= PGROUNDDOWN(addr + len - 1)) break;
+        a += 4096;
+    }
+    return 0;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *d = (char *)dest; const char *s = (const char *)src;
+    while (n--) *d++ = *s++;
+    return dest;
+}
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = (unsigned char *)s;
+    while (n--) *p++ = (unsigned char)c;
+    return s;
+}
+void *kalloc(void) {
+    struct run *r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+    if (r) kmem.freelist = r->next;
+    release(&kmem.lock);
+    return (void *)r;
+}
+void kfree(void *pa) {
+    struct run *r;
+    memset(pa, 1, 4096);
+    acquire(&kmem.lock);
+    r = (struct run *)pa;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
+    release(&kmem.lock);
+}
+int mmap_alloc(struct proc *p, uint64_t addr, size_t len, int prot) {
+    uint64_t a = PGROUNDDOWN(addr);
+    for (;;) {
+        void *mem = kalloc();
+        if (mem == 0) return -1;
+        memset(mem, 0, 4096);
+        if (mappages(p->pagetable,

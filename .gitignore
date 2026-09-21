@@ -1,0 +1,27 @@
+# Binarios y builds de simulación
+build/
+bin/
+*.o
+*.so
+*.elf
+*.bin
+sim_*
+vvp
+a.out
+
+# Logs y formas de onda
+*.log
+*.vcd
+*.fst
+trace_*.json
+
+# Archivos temporales de herramientas EDA
+*.jou
+*.str
+.Xil/
+xsim.dir/
+
+# Archivos temporales de sistema y editores
+.DS_Store
+*.swp
+*~
