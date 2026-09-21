@@ -23,7 +23,7 @@ AFT-Ouroboros is an open-source digital coprocessor designed for sub-watt linear
 │   └── public/               # Testbenches, stimuli & golden vectors
 ├── 02_benchmarks/            # EDA synthesis scripts & logs
 ├── 03_data/                  # Curated calibration datasets
-└── 05_artifacts_checkpoints/ # Hashes, metadata & checkpoints
+└── aft_fpga_sim/ # Hashes, metadata & checkpoints
 ```
 
 ## Documentation References
